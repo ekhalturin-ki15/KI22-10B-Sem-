@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <memory>
+#include <string>
 using namespace std;
 
 /*
@@ -18,12 +19,33 @@ void print(istream &in, ostream &out) {
 #endif
 }
 
+enum Items : int {
+    EIT_rock = 0,
+    EIT_paper,
+    EIT_scissors,
+    EIT_size
+};
+
+
 class Player {
 public:
     ifstream input_;
     explicit Player(const string& file_path) {
         input_.open(file_path);
         print(input_, cout);
+    }
+
+
+    Items pTurn_ = 0;
+
+    bool Turn() {
+        int iTurn;
+
+        input_ >> iTurn;
+
+        pTurn_ = Items(iTurn);
+
+
     }
 };
 
@@ -34,10 +56,18 @@ public:
         p1 = make_shared<Player>(path1);
         p2 = make_shared<Player>(path2);
     }
+
+    bool GameLoop() {
+        p1.Turn();
+        p2.Turn();
+    }
 };
 
 
 int main() {
     Game game;
+
+    game.GameLoop();
+
     return 0;
 }
